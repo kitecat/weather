@@ -40,8 +40,9 @@ class CitiesListAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val viewHolder =
-            LayoutInflater.from(parent.context).inflate(R.layout.cities_list_item, parent, false)
+        val viewHolder = LayoutInflater
+            .from(parent.context)
+            .inflate(R.layout.cities_list_item, parent, false)
         return ViewHolder(viewHolder) {
             onItemClicked(weatherList[it])
         }

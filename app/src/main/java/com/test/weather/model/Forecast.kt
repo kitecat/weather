@@ -7,5 +7,6 @@ data class Forecast(
     val sunrise: String? = null,
     val sunset: String? = null,
     val moon_code: Int? = null,
-    val moon_text: String? = null
+    val moon_text: String? = null,
+    val parts: Parts? = null
 )

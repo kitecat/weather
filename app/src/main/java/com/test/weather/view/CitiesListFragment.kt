@@ -6,12 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.test.weather.R
 import com.test.weather.`interface`.RetrofitServices
 import com.test.weather.adapter.CitiesListAdapter
 import com.test.weather.common.Common
+import com.test.weather.model.ItemViewModel
 import com.test.weather.model.Weather
 import dmax.dialog.SpotsDialog
 import retrofit2.Call
@@ -29,6 +31,8 @@ class CitiesListFragment : Fragment() {
     private val citiesLats = arrayOf(55.755819, 59.939099, 62.027221) // Широты городов
     private val citiesLons = arrayOf(37.617644, 30.315877, 129.732178) // ДолгОты городов
     private var weatherList = mutableListOf<Weather>() // Погода в городах
+
+    private val viewModel: ItemViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -72,7 +76,7 @@ class CitiesListFragment : Fragment() {
     private fun applyDataAndShow() {
         if (weatherList.size == citiesLats.size) {
             adapter = CitiesListAdapter(weatherList) {
-                println("clicked " + it.geo_object?.locality?.name)
+                viewModel.selectItem(it)
             }
             adapter.notifyDataSetChanged()
             recyclerView.adapter = adapter
