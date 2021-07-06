@@ -4,7 +4,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.test.weather.R
 import com.test.weather.model.Weather
@@ -20,7 +19,8 @@ class CitiesListAdapter(
             notifyDataSetChanged()
         }
 
-    class ViewHolder(itemView: View, onItemClicked: (Int) -> Unit) : RecyclerView.ViewHolder(itemView) {
+    class ViewHolder(itemView: View, onItemClicked: (Int) -> Unit) :
+        RecyclerView.ViewHolder(itemView) {
         var cityNameTextView: TextView? = null
         var temperatureTextView: TextView? = null
 
@@ -34,18 +34,14 @@ class CitiesListAdapter(
         }
 
         fun bind(listItem: Weather) {
-            itemView.setOnClickListener {
-                Toast.makeText(
-                    it.context,
-                    "нажал на ${listItem.geo_object?.locality?.name}",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
+            cityNameTextView?.text = listItem.geo_object?.locality?.name
+            temperatureTextView?.text = listItem.fact?.temp.toString()
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val viewHolder = LayoutInflater.from(parent.context).inflate(R.layout.cities_list_item, parent, false)
+        val viewHolder =
+            LayoutInflater.from(parent.context).inflate(R.layout.cities_list_item, parent, false)
         return ViewHolder(viewHolder) {
             onItemClicked(weatherList[it])
         }
@@ -57,8 +53,5 @@ class CitiesListAdapter(
         val listItem = weatherList[position]
         holder.bind(listItem)
         holder.itemView.setOnClickListener { onItemClicked(listItem) }
-
-        holder.cityNameTextView?.text = weatherList[position].geo_object?.locality?.name
-        holder.temperatureTextView?.text = weatherList[position].fact?.temp.toString()
     }
 }
