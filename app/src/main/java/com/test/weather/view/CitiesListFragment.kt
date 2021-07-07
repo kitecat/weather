@@ -34,26 +34,29 @@ class CitiesListFragment : Fragment() {
 
     private val viewModel: ItemViewModel by activityViewModels()
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        mService = Common.retrofitService
+        dialog = SpotsDialog.Builder().setCancelable(true).setContext(context).build()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.cities_list_fragment, container, false)
 
-        mService = Common.retrofitService
-
         recyclerView = view.findViewById(R.id.citiesRecyclerView)
         recyclerView.setHasFixedSize(true)
         layoutManager = LinearLayoutManager(context)
         recyclerView.layoutManager = layoutManager
 
-        dialog = SpotsDialog.Builder().setCancelable(true).setContext(context).build()
-        dialog.show()
-
         val citiesCount: Int = citiesLats.size - 1
         for (i in 0..citiesCount) {
             getWeatherList(citiesLats[i], citiesLons[i])
         }
+        dialog.show()
 
         return view
     }
@@ -67,6 +70,9 @@ class CitiesListFragment : Fragment() {
             }
 
             override fun onResponse(call: Call<Weather>, response: Response<Weather>) {
+                if (weatherList.size > 2) {
+                    weatherList.clear()
+                }
                 weatherList.add(response.body() as Weather)
                 applyDataAndShow()
             }

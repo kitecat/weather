@@ -33,6 +33,16 @@ class MainActivity : AppCompatActivity() {
                 fragment,
                 fragment::class.java.simpleName
             )
+            .addToBackStack(fragment::class.java.simpleName)
             .commit()
+    }
+
+    override fun onBackPressed() {
+        val count = supportFragmentManager.backStackEntryCount
+        if (count == 0) {
+            super.onBackPressed()
+        } else {
+            supportFragmentManager.popBackStack()
+        }
     }
 }
